@@ -87,19 +87,24 @@ istream& operator>>(istream& in, Locatie& x)
     int nrmaximRand, nrmaximLoc, nrlocOcupate;
     string status;
     cout << "Locatia este inchiriata(ocupata)?[DA/NU] ";
-    cin >> status;
+    in >> status;
+    while (in.fail())
+    {
+        in.clear();
+        in.ignore(100, '\n');
+        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        in >> status;
+    }
     if (status == "da" || status == "Da" || status == "dA" || status == "DA")
     {
         x.setStatus("inchiriat");
         cout << "Numarul maxim de randuri: ";
-        cin >> nrmaximRand;
+        in >> nrmaximRand;
         x.setNrMaximRanduri(nrmaximRand);
         cout << "Numarul maxim de locuri/rand: ";
-        cin >> nrmaximLoc;
+        in >> nrmaximLoc;
         x.setNrMaximLocuri(nrmaximLoc);
-        //cout << "Numarul de locuri ocupate ";
-        //cin >> nrlocOcupate;
-        //x.setnrLocOcupate(nrlocOcupate);
+     
     }
     else
         x.setStatus("liber");
@@ -110,7 +115,7 @@ ostream& operator<<(ostream& out, Locatie& x)
     out << "nr de locuri ocupate " << x.nrLocOcupate << endl;
     out << "nr Maxim de randuri " << x.nrMaximRanduri << endl;
     out << "nr Maxim de locuri pe rand" << x.nrMaximLocuri << endl;
-    out << "status " << x.status;
+    out << "status " << x.status<<endl;
     return out;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -262,19 +267,47 @@ istream& operator>>(istream& in, Eveniment& x)
     Locatie loc;
     char tip[50];
     cout << "Tipul de eveniment: ";
-    cin >> tip;
+    in >> tip;
+    while (in.fail())
+    {
+        in.clear();
+        in.ignore(100, '\n');
+        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        in >> tip;
+    }
     if (x.tip != nullptr)
         delete[] x.tip;
     x.tip = new char[strlen(tip) + 1];
     strcpy(x.tip, tip);
     cout << "ora ";
-    cin >> ora;
+    in >> ora;
+    while (in.fail())
+    {
+        in.clear();
+        in.ignore(100, '\n');
+        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        in >> ora;
+    }
     x.ora = ora;
     cout << "data ";
-    cin >> data;
+    in >> data;
+    while (in.fail())
+    {
+        in.clear();
+        in.ignore(100, '\n');
+        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        in >> data;
+    }
     x.data = data;
     cout << "Locatia evenimentului ";
-    cin >> loc;
+    in >> loc;
+    while (in.fail())
+    {
+        in.clear();
+        in.ignore(100, '\n');
+        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        in >> loc;
+    }
     x.loc = loc;
     return in;
 }
@@ -547,7 +580,14 @@ istream& operator>>(istream& in, Bilet& x)
     float pret;
     int* nrLoc, * nrRand;
     cout << "nr de locuri pe care doriti sa le ocupati: ";
-    cin >> nrbil;
+    in >> nrbil;
+    while (in.fail())
+    {
+        in.clear();
+        in.ignore(100, '\n');
+        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        in >> nrbil;
+    }
     nrLoc = new int[nrbil];
     nrRand = new int[nrbil];
     x.nrLoc = new int[nrbil];
@@ -556,20 +596,41 @@ istream& operator>>(istream& in, Bilet& x)
     cout << "introduceti locurile pe care le doriti ";
     for (i = 0; i < nrbil; i++)
     {
-        cin >> nrLoc[i];
+        in >> nrLoc[i];
+        while (in.fail())
+        {
+            in.clear();
+            in.ignore(100, '\n');
+            cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+            in >> nrLoc[i];
+        }
         x.nrLoc[i] = nrLoc[i];
     }
     cout << "introduceti randul/rile pe care le doriti ";
     for (i = 0; i < nrbil; i++)
     {
-        cin >> nrRand[i];
+        in >> nrRand[i];
+        while (in.fail())
+        {
+            in.clear();
+            in.ignore(100, '\n');
+            cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+            in >> nrRand[i];
+        }
         x.nrRand[i] = nrRand[i];
     }
     for (i = 0; i < nrbil; i++)
         // x.evenim.loc.matriceLocuri[nrRand[i] - 1][nrLoc[i] - 1] = 1;
         Locatie::matriceLocuri[nrRand[i] - 1][nrLoc[i] - 1] = 1;
     cout << "Evenimentul: ";
-    cin >> evenim;
+    in >> evenim;
+    while (in.fail())
+    {
+        in.clear();
+        in.ignore(100, '\n');
+        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        in >> evenim;
+    }
     x.evenim = evenim;
     return in;
 }

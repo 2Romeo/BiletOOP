@@ -9,6 +9,9 @@ int main()
     int v3[] = { 4,5,6,7 };
     Locatie x1,z1;
     Eveniment x3;
+    Bilet x6;
+    cin >> x6;
+    cout << x6;
     x3.setLocatie(x1);
     Eveniment x2((char*)"tip", "ora1", "data1", x1);
     Eveniment x4((char*)"tip", "ora2", "data1", x1);

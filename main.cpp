@@ -10,16 +10,18 @@ int main()
     Locatie x1,z1;
     Eveniment x3;
     Bilet x6;
-    cin >> x6;
+     cin >> x6;
     cout << x6;
     x3.setLocatie(x1);
     Eveniment x2((char*)"tip", "ora1", "data1", x1);
+    Eveniment x22 = x2;
     Eveniment x4((char*)"tip", "ora2", "data1", x1);
     if (x2 == x4)
         cout << "da";
     else
         cout << "NU";
     Bilet y(x2, 4, v, v1);
+    Bilet yy = y;
     Bilet y3(x2, 4, v2, v3);
     Locatie::afisMatrice1();
     y.setnrLoc(v3, 4);

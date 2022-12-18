@@ -244,6 +244,14 @@ Eveniment::Eveniment()
 {
     tip = nullptr;
 }
+Eveniment::Eveniment(const Eveniment& x)
+{
+    loc = x.loc;
+    ora = x.ora;
+    data = x.data;
+    tip = new char[strlen(x.tip) + 1];
+    strcpy(tip, x.tip);
+}
 Eveniment& Eveniment::operator=(const Eveniment& x)
 {
     if (this != &x)
@@ -316,6 +324,7 @@ ostream& operator<<(ostream& out, Eveniment& x)
    /* char tip1[50];
     strcpy(tip1, x.tip);
    */
+    if(x.tip!=nullptr)
     out << "Denumirea evenimentului " << x.tip << endl;
     out << "Ora evenimentului " << x.ora << endl;
     out << "Data evenimentulu " << x.data << endl;
@@ -443,6 +452,23 @@ Bilet::Bilet() :id(generateid())
     nrRand = nullptr;
 
 
+}
+Bilet::Bilet(const Bilet& x) :id(x.id)
+{
+    this->nrBilete = x.nrBilete;
+    int i;
+    this->nrLoc = new int[nrBilete];
+    this->nrRand = new int[nrBilete];
+    for (i = 0; i < nrBilete; i++)
+        this->nrLoc[i] = x.nrLoc[i];
+    for (i = 0; i < nrBilete; i++)
+        nrRand[i] = x.nrRand[i];
+    for (i = 0; i < nrBilete; i++)
+        evenim.loc.matriceLocuri[nrRand[i] - 1][nrLoc[i] - 1] = 1;
+    evenim = x.evenim;
+    evenim.loc.nrLocOcupate = x.evenim.loc.nrLocOcupate;
+    for (i = 0; i < x.evenim.loc.nrLocOcupate; i++)
+        setVectid(i, x.vectid[i]);
 }
 Bilet::Bilet(Eveniment& x, int nrbil, int* nrloc, int* nrrand) :Bilet()//, id(generateid())
 {

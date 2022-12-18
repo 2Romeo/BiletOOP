@@ -70,6 +70,7 @@ public:
 	void cancelEveniment();//--
 	Eveniment();
 	bool InsuficienteLocuri(int);
+	Eveniment(const Eveniment&);
 	Eveniment(char*, string, string, Locatie&);
 	Eveniment& operator=(const Eveniment&);
 	~Eveniment();
@@ -105,6 +106,7 @@ public:
 	Eveniment getevenim();
 	Bilet();
 	Bilet(Eveniment&, int, int*, int*);
+	Bilet(const Bilet&);
 	~Bilet();
 	//	void afisMatrice();
 	Bilet& operator=(const Bilet&);

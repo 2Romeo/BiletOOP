@@ -3,8 +3,10 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-using namespace std;
+#include <vector>
 #pragma warning(disable:4996)
+using namespace std;
+
 class Bilet;
 class Eveniment;
 class Locatie {
@@ -29,6 +31,7 @@ public:
 	static int getNrMaximLocuri();
 	static int getNrMaximRanduri();
 	static int getMatriceLocuri();
+	static int getNrLocOcupate();
 	void setVectid(int);
 	static void afisMatrice1();//~
 	bool operator!=(const Locatie&);
@@ -38,15 +41,11 @@ public:
 	static void stergereLocatie();//~~
 	friend istream& operator>>(istream&, Locatie&);
 	friend ostream& operator<<(ostream&, Locatie&);
-
-	//friend istream& operator>>(istream&, Eveniment&);
-	//friend ostream& operator<<(ostream&, Eveniment);
-
 	friend istream& operator>>(istream&, Bilet&);
-	friend ostream& operator<<(ostream&, Bilet&);
+	//friend ostream& operator<<(ostream&, Bilet&);
+	//friend istream& operator>>(istream&, Eveniment&);
+	//friend ostream& operator<<(ostream&, Eveniment&);
 
-	//Locatie(int[5000]);
-	//~Locatie();
 };
 
 class Eveniment {
@@ -86,7 +85,7 @@ class Bilet {
 	friend class Locatie;
 	Eveniment evenim;
 	int nrBilete;//nr de locuri ocupate de pe bilet
-	//float pret;
+	float pret;
 	int* nrLoc, * nrRand;
 	static int vectid[5000];
 	const int id;
@@ -95,20 +94,20 @@ public:
 	int operator[](int);
 	void setEvenim(Eveniment&);
 	void setNrBilete(int);
-	//void setPret(float);
+	void setPret(float);
 	static void setVectid(int, int);
+	static int getvectid(int);
 	void setnrLoc(int*,int);
 	void setnrRand(int*,int);
 	int getNrBilete();
 	float getpret();
 	static void afisVectid();//~~~
-	static void refund(Bilet& y);//~~~
+	static void refund(Bilet&);//~~~
 	Eveniment getevenim();
 	Bilet();
-	Bilet(Eveniment&, int, int*, int*);
+	Bilet(Eveniment&,float, int, int*, int*);
 	Bilet(const Bilet&);
 	~Bilet();
-	//	void afisMatrice();
 	Bilet& operator=(const Bilet&);
 	Bilet& operator+=(const Bilet&);
 	int generateid();//~~~
@@ -118,4 +117,36 @@ public:
 	int getnrBilete();
 	friend istream& operator>>(istream&, Bilet&);
 	friend ostream& operator<<(ostream&, Bilet&);
+};
+class Persoana
+{
+protected:
+	int varsta;
+	Bilet bilet;
+public:
+	void setBilet(Bilet&);
+	Bilet& getBilet();
+	void setPret1(int x)
+	{
+		bilet.setPret(x);
+	}
+	virtual void afiseazadate();
+	virtual void setVarsta(int)=0;
+	virtual void setPret()=0;
+};
+
+class Student_sau_elev :virtual public Persoana
+{
+public:
+	void setVarsta(int);
+	 void setPret();//redus cu 40%
+	void afiseazadate();
+};
+
+class Persoana_cu_dizabilitati:virtual public Persoana
+{
+public:
+	void setVarsta(int);
+	void setPret();//redus cu 80%
+	void afiseazadate();
 };

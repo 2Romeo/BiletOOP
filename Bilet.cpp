@@ -6,6 +6,7 @@ int Locatie::nrMaximLocuri = 50;
 int Locatie::nrMaximRanduri = 50;
 int Locatie::nrLocOcupate = 0;
 int Bilet::vectid[5000] = { NULL };
+//vector<Bilet> Persoana::vectbilete = { };
 string Locatie::status = "necunoscut";
 
 Locatie& Locatie::operator++() {
@@ -31,8 +32,7 @@ Locatie& Locatie::operator--(int) {
     return copie;
 };
 void Locatie::setnrLocOcupate(int x)
-{   if(x>0)
-    nrLocOcupate += x;
+{   nrLocOcupate += x;
 }
 void Locatie::setNrMaximLocuri(int x)
 {   if(x>0)
@@ -82,6 +82,36 @@ void Locatie::setStatus(string x)
     else
     status = x;
 }
+void Locatie::afisMatrice1()
+{
+    int i, j, maxRand = 0, maxLoc = 0;
+    for (i = 0; i < nrMaximRanduri; i++)
+        for (j = 0; j < nrMaximLocuri; j++)
+            if (matriceLocuri[i][j] == 1)
+            {
+                if (i > maxRand)
+                    maxRand = i;
+                if (j > maxLoc)
+                    maxLoc = j;
+            }
+    if (maxRand > 0 || maxLoc > 0) {
+        for (i = 0; i <= maxRand; i++)
+        {
+            for (j = 0; j <= maxLoc; j++)
+                cout << matriceLocuri[i][j] << " ";
+            cout << endl;
+        }
+        cout << endl;
+    }
+    else
+    {
+        cout << "niciun loc ocupat" << endl;
+    }
+}
+int Locatie::getNrLocOcupate()
+{
+    return nrLocOcupate;
+}
 istream& operator>>(istream& in, Locatie& x)
 {
     int nrmaximRand, nrmaximLoc, nrlocOcupate;
@@ -119,32 +149,6 @@ ostream& operator<<(ostream& out, Locatie& x)
     return out;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void Locatie::afisMatrice1()
-{
-    int i, j, maxRand = 0, maxLoc = 0;
-    for (i = 0; i < nrMaximRanduri; i++)
-        for (j = 0; j < nrMaximLocuri; j++)
-            if (matriceLocuri[i][j] == 1)
-            {
-                if (i > maxRand)
-                    maxRand = i;
-                if (j > maxLoc)
-                    maxLoc = j;
-            }
-    if (maxRand > 0 && maxLoc > 0) {
-        for (i = 0; i <= maxRand; i++)
-        {
-            for (j = 0; j <= maxLoc; j++)
-                cout << matriceLocuri[i][j] << " ";
-            cout << endl;
-        }
-        cout << endl;
-    }
-    else
-    {
-        cout << "niciun loc ocupat" << endl;
-    }
-}
 string Eveniment::getOra()
 {
     return ora;
@@ -332,7 +336,10 @@ ostream& operator<<(ostream& out, Eveniment& x)
     return out;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+void Bilet::setPret(float x)
+{
+    pret = x;
+}
 void Bilet::setnrRand(int* x, int nr)
 {
     if (nr <= nrBilete)
@@ -388,9 +395,18 @@ int* Bilet::getnrRand()
 {
     return nrRand;
 }
+float Bilet::getpret()
+{
+    return pret;
+}
 int Bilet::getid()
 {
     return id;
+}
+int Bilet::getvectid(int i)
+{
+    if (i >= 0 && i < Locatie::getNrLocOcupate())
+        return vectid[i];
 }
 int Bilet::getnrBilete()
 {
@@ -410,6 +426,7 @@ Bilet& Bilet::operator=(const Bilet& x)
                 delete[] nrLoc;
             if (nrRand != nullptr)
                 delete[] nrRand;
+            pret = x.pret;
             nrLoc = new int[nrBilete];
             nrRand = new int[nrBilete];
             for (int i{ 0 }; i < nrBilete; i++)
@@ -450,28 +467,32 @@ Bilet::Bilet() :id(generateid())
 {
     nrLoc = nullptr;
     nrRand = nullptr;
-
-
+    pret = 0;
+    nrBilete = 0;
 }
 Bilet::Bilet(const Bilet& x) :id(x.id)
 {
-    this->nrBilete = x.nrBilete;
+    if (x.pret >= 0)
+        pret = x.pret;
+    if(x.nrBilete>0)
+    nrBilete = x.nrBilete;
     int i;
-    this->nrLoc = new int[nrBilete];
-    this->nrRand = new int[nrBilete];
+    nrLoc = new int[nrBilete];
+    nrRand = new int[nrBilete];
     for (i = 0; i < nrBilete; i++)
-        this->nrLoc[i] = x.nrLoc[i];
+        nrLoc[i] = x.nrLoc[i];
     for (i = 0; i < nrBilete; i++)
         nrRand[i] = x.nrRand[i];
     for (i = 0; i < nrBilete; i++)
         evenim.loc.matriceLocuri[nrRand[i] - 1][nrLoc[i] - 1] = 1;
     evenim = x.evenim;
+    pret = x.pret;
     evenim.loc.nrLocOcupate = x.evenim.loc.nrLocOcupate;
     for (i = 0; i < x.evenim.loc.nrLocOcupate; i++)
         setVectid(i, x.vectid[i]);
 }
-Bilet::Bilet(Eveniment& x, int nrbil, int* nrloc, int* nrrand) :Bilet()//, id(generateid())
-{
+Bilet::Bilet(Eveniment& x,float pret1, int nrbil, int* nrloc, int* nrrand) :Bilet()//, id(generateid())
+{   
     int i, ok = 0; int k = 0; int aux[100] = { NULL };
     for (i = 0; i < nrbil; i++)
         if (Bilet::evenim.loc.matriceLocuri[nrrand[i] - 1][nrloc[i] - 1] == 1)
@@ -487,8 +508,11 @@ Bilet::Bilet(Eveniment& x, int nrbil, int* nrloc, int* nrrand) :Bilet()//, id(ge
     }
     else
     {
+        if (pret1 >=0)
+            pret = pret1;
         evenim = x;
-        nrBilete = nrbil;
+        if(nrbil>0)
+            nrBilete = nrbil;
         nrLoc = new int[nrBilete];
         nrRand = new int[nrBilete];
         for (i = 0; i < nrBilete; i++)
@@ -599,15 +623,28 @@ void Bilet::refund(Bilet& x)
     else
         cout << "bilet invalid" << endl;
 }
+Bilet& Persoana::getBilet() {
+    return bilet;
+}
 istream& operator>>(istream& in, Bilet& x)
 {
     Eveniment evenim;
     int nrbil, i;
     float pret;
     int* nrLoc, * nrRand;
+    cout << "Introduceti pretul nemodificat al biletului: ";
+    in >> pret;
+    while (in.fail()==1)
+    {
+        in.clear();
+        in.ignore(100, '\n');
+        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        in >> pret;
+    }
+    x.pret = pret;
     cout << "nr de locuri pe care doriti sa le ocupati: ";
     in >> nrbil;
-    while (in.fail())
+    while (in.fail()==1)
     {
         in.clear();
         in.ignore(100, '\n');
@@ -646,8 +683,8 @@ istream& operator>>(istream& in, Bilet& x)
         x.nrRand[i] = nrRand[i];
     }
     for (i = 0; i < nrbil; i++)
-        // x.evenim.loc.matriceLocuri[nrRand[i] - 1][nrLoc[i] - 1] = 1;
-        Locatie::matriceLocuri[nrRand[i] - 1][nrLoc[i] - 1] = 1;
+         x.evenim.loc.matriceLocuri[nrRand[i] - 1][nrLoc[i] - 1] = 1;
+        //Locatie::matriceLocuri[x.nrRand[i] - 1][x.nrLoc[i] - 1] = 1;
     cout << "Evenimentul: ";
     in >> evenim;
     while (in.fail())
@@ -676,7 +713,72 @@ ostream& operator<<(ostream& out, Bilet& x)
           out << x.vectid[i] << " ";*/
     out << endl;
     out << "id-ul biletului " << x.id << endl;
+    out << "pretul biletului " << x.pret << endl;
     out << "evenimentul " << endl;
    out << x.evenim;
     return out;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Persoana::setBilet(Bilet& x)
+{   
+    bilet = x;
+}
+void Persoana::afiseazadate()
+{   
+    cout << bilet;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Student_sau_elev::setVarsta(int x) {
+    if (x > 0)
+        varsta = x;
+}
+void Student_sau_elev::setPret()
+{
+    int aux, ok = 1;
+    while (ok) {
+        if (varsta > 0)
+        {
+            bilet.setPret(bilet.getpret() - bilet.getpret() * 0.4);
+            ok = 0;
+        }
+        else
+        {
+            cout << "nu este setata varsta " << endl;
+            cout << "introduceti varsta: ";
+            cin >> aux;
+            this->setVarsta(aux);
+        }
+    }
+}
+void Student_sau_elev::afiseazadate()
+{
+    this->setPret();
+    cout << bilet;
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+void Persoana_cu_dizabilitati::setVarsta(int x) {
+    if (x > 0)
+        varsta = x;
+}
+void Persoana_cu_dizabilitati::setPret()
+{
+    int aux, ok = 1;
+    while (ok) {
+        if (varsta > 0)
+        {
+            bilet.setPret(bilet.getpret() - bilet.getpret() * 0.8);
+            ok = 0;
+        }
+        else
+        {
+            cout << "nu este setata varsta " << endl;
+            cout << "introduceti varsta: ";
+            cin >> aux;
+            this->setVarsta(aux);
+        }
+    }
+}
+void Persoana_cu_dizabilitati::afiseazadate() {
+    this->setPret();
+    cout << bilet;
 }

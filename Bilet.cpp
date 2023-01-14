@@ -116,13 +116,13 @@ istream& operator>>(istream& in, Locatie& x)
 {
     int nrmaximRand, nrmaximLoc, nrlocOcupate;
     string status;
-    cout << "Locatia este inchiriata(ocupata)?[DA/NU] ";
+    cout << "Locatia este inchiriata(ocupata)?[DA/NU]: ";
     in >> status;
     while (in.fail())
     {
         in.clear();
         in.ignore(100, '\n');
-        cout << "   nu ati introdus corect " << endl << "   incercati din nou: ";
+        cout << "   nu ati introdus corect: " << endl << "   incercati din nou: ";
         in >> status;
     }
     if (status == "da" || status == "Da" || status == "dA" || status == "DA")
@@ -130,9 +130,11 @@ istream& operator>>(istream& in, Locatie& x)
         x.setStatus("inchiriat");
         cout << "Numarul maxim de randuri: ";
         in >> nrmaximRand;
+        if(nrmaximRand>Locatie::nrMaximRanduri)
         x.setNrMaximRanduri(nrmaximRand);
         cout << "Numarul maxim de locuri/rand: ";
         in >> nrmaximLoc;
+        if (nrmaximLoc > Locatie::nrMaximLocuri)
         x.setNrMaximLocuri(nrmaximLoc);
      
     }
@@ -142,10 +144,10 @@ istream& operator>>(istream& in, Locatie& x)
 }
 ostream& operator<<(ostream& out, Locatie& x)
 {
-    out << "nr de locuri ocupate " << x.nrLocOcupate << endl;
-    out << "nr Maxim de randuri " << x.nrMaximRanduri << endl;
-    out << "nr Maxim de locuri pe rand" << x.nrMaximLocuri << endl;
-    out << "status " << x.status<<endl;
+    out << "nr de locuri ocupate: " << x.nrLocOcupate << endl;
+    out << "nr Maxim de randuri: " << x.nrMaximRanduri << endl;
+    out << "nr Maxim de locuri pe rand: " << x.nrMaximLocuri << endl;
+    out << "status: " << x.status<<endl;
     return out;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -291,7 +293,7 @@ istream& operator>>(istream& in, Eveniment& x)
         delete[] x.tip;
     x.tip = new char[strlen(tip) + 1];
     strcpy(x.tip, tip);
-    cout << "ora ";
+    cout << "ora: ";
     in >> ora;
     while (in.fail())
     {
@@ -301,7 +303,7 @@ istream& operator>>(istream& in, Eveniment& x)
         in >> ora;
     }
     x.ora = ora;
-    cout << "data ";
+    cout << "data: ";
     in >> data;
     while (in.fail())
     {
@@ -311,7 +313,7 @@ istream& operator>>(istream& in, Eveniment& x)
         in >> data;
     }
     x.data = data;
-    cout << "Locatia evenimentului ";
+    cout << "Locatia evenimentului "<<endl;
     in >> loc;
     while (in.fail())
     {
@@ -325,14 +327,12 @@ istream& operator>>(istream& in, Eveniment& x)
 }
 ostream& operator<<(ostream& out, Eveniment& x)
 {
-   /* char tip1[50];
-    strcpy(tip1, x.tip);
-   */
+
     if(x.tip!=nullptr)
-    out << "Denumirea evenimentului " << x.tip << endl;
-    out << "Ora evenimentului " << x.ora << endl;
-    out << "Data evenimentulu " << x.data << endl;
-    out << "Locatie " << x.loc << endl;
+    out << "Denumirea evenimentului: " << x.tip << endl;
+    out << "Ora evenimentului: " << x.ora << endl;
+    out << "Data evenimentulu: " << x.data << endl;
+    out << "Locatie: "<<endl << x.loc << endl;
     return out;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -685,7 +685,7 @@ istream& operator>>(istream& in, Bilet& x)
     for (i = 0; i < nrbil; i++)
          x.evenim.loc.matriceLocuri[nrRand[i] - 1][nrLoc[i] - 1] = 1;
         //Locatie::matriceLocuri[x.nrRand[i] - 1][x.nrLoc[i] - 1] = 1;
-    cout << "Evenimentul: ";
+    cout << "Evenimentul: "<<endl;
     in >> evenim;
     while (in.fail())
     {
@@ -700,22 +700,22 @@ istream& operator>>(istream& in, Bilet& x)
 ostream& operator<<(ostream& out, Bilet& x)
 {
     int i;
-    out << "nr de locuri ocupate" << x.nrBilete << endl;
-    out << "Locurile ocupate ";
+    out << "nr de locuri ocupate: " << x.nrBilete << endl;
+    out << "Locurile ocupate: ";
     for (i = 0; i < x.nrBilete; i++)
         out << x.nrLoc[i] << " ";
     out << endl;
-    out << "Randurile ocupate ";
+    out << "Randurile ocupate: ";
     for (i = 0; i < x.nrBilete; i++)
         out << x.nrRand[i] << " ";
     /*  out << "vectorul de id-uri ";
       for (int i{ 0 }; i < Locatie::nrLocOcupate; i++)
           out << x.vectid[i] << " ";*/
     out << endl;
-    out << "id-ul biletului " << x.id << endl;
-    out << "pretul biletului " << x.pret << endl;
-    out << "evenimentul " << endl;
-   out << x.evenim;
+    out << "id-ul biletului: " << x.id << endl;
+    out << "pretul biletului: " << x.pret << endl;
+    out << "evenimentul: " << endl;
+    out << x.evenim;
     return out;
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

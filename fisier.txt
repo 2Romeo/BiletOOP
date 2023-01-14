@@ -1,0 +1,17 @@
+----------Bilet 
+nr de locuri ocupate: 3
+Locurile ocupate: 1 2 3 
+Randurile ocupate: 1 1 1 
+id-ul biletului: 18467
+pretul biletului: 12
+evenimentul: 
+Denumirea evenimentului: fotbal
+Ora evenimentului: 12
+Data evenimentulu: 12
+Locatie: 
+nr de locuri ocupate: 1
+nr Maxim de randuri: 50
+nr Maxim de locuri pe rand: 50
+status: Necunoscut
+
+

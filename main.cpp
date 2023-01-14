@@ -1,15 +1,18 @@
 #include "Bilet.h"
 
-ofstream g("Bilet.bin", ios::out | ios::binary | ios::ate);
+//ofstream g("Bilet.bin", ios::out | ios::binary | ios::ate);
 int main()
 {
+	ofstream g;
+	g.open("fisier.txt", ios::out | ios::binary);
 	vector <Bilet> bilete;
-	int i, j,aux,mmm;
-	 //~~~~~~~~~~~MENIU~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	int i, j, aux, mmm;
+	//~~~~~~~~~~~MENIU~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	cout << "Puteti alege din urmatoarele: " << endl;
 	cout << "1-Cumpara bilet" << endl;
 	cout << "2-Returneaza bilet" << endl;
 	cout << "3-Valideaza bilet" << endl;
+	cout << "Introduceti alegerea: ";
 	cin >> mmm;
 	while (mmm)
 	{
@@ -25,57 +28,65 @@ int main()
 			cin >> x;
 			//x.afisVectid();
 			//Locatie::afisMatrice1();
-		
-			cout << "Sunteti 1-elev sau student/2-persoana cu dizabilitati/3-ambele " << endl;
+
+			cout << "Sunteti 1-elev sau student/2-persoana cu dizabilitati/3-ambele/4-nicio alegere " << endl;
 			cin >> aux;
 			if (aux == 1)
-			{	
+			{
 				Student_sau_elev xx3;
 				xx3.setBilet(x);
+				xx3.setPret();
 				bilete.push_back(xx3.getBilet());
 				xx3.setPret();
 				//xx3.afiseazadate();
 				//Bilet::afisVectid();
-				}
+			}
 			else
 				if (aux == 2)
 				{
 					Persoana_cu_dizabilitati xx4;
 					xx4.setBilet(x);
+					xx4.setPret();
 					bilete.push_back(xx4.getBilet());
 					xx4.setPret();
 					//xx4.afiseazadate();
 					//Bilet::afisVectid();
-					}
+				}
 				else
 					if (aux == 3)
 					{
 
 						Persoana_cu_dizabilitati xx5;//sau Student_sau_elev xx4
 						xx5.setBilet(x);
+						xx5.setPret();
 						bilete.push_back(xx5.getBilet());
 						xx5.setPret1(0);
-					//	xx5.afiseazadate();
+						//	xx5.afiseazadate();
 					//	Bilet::afisVectid();
-					
+
 					}
 					else
-					{
-						bilete.push_back(x);//punem biletul normal in vector 
-						cout << "input gresit " << endl;
-					}
+						if (aux == 4)
+						{
+							bilete.push_back(x);//punem biletul normal in vector 
+						}
+						else
+						{
+							bilete.push_back(x);
+							cout << "input gresit " << endl;
+						}
 			if (aux == 1 || aux == 2 || aux == 3)
 			{
-				for ( i = 0; i < Locatie::getNrLocOcupate(); i++)// pentru stergerea id-ului biletlului x format la inceput
+				for (i = 0; i < Locatie::getNrLocOcupate(); i++)// pentru stergerea id-ului biletlului x format la inceput
 					if (x.getid() == Bilet::getvectid(i))
 					{
-						for (j= i ; j < Locatie::getNrLocOcupate() - 1; j++)
+						for (j = i; j < Locatie::getNrLocOcupate() - 1; j++)
 							Bilet::setVectid(j, Bilet::getvectid(j + 1));
 						Bilet::setVectid(j, 0);
-					} 
+					}
 				//cout << "vectid: "; Bilet::afisVectid();
 				Locatie::setnrLocOcupate(-1);
-				aux=0;
+				aux = 0;
 			}
 			//delete y11;
 			cout << "Cumparati alt bilet ?[DA/NU]" << endl;
@@ -85,8 +96,8 @@ int main()
 
 				zzz = 0;
 		}
-			break;
-		
+		break;
+
 		}
 
 		case 2: {	int id, i, ok, ok1 = 1;
@@ -116,8 +127,8 @@ int main()
 							break;
 						}
 				}
-						else
-							cout << "id-ul este invalid" << endl;
+				else
+					cout << "id-ul este invalid" << endl;
 				//Bilet::afisVectid();
 				string rasp;
 				cout << "introduceti alt id?[Y/N] " << endl;
@@ -199,6 +210,7 @@ int main()
 			cout << "1-Cumpara bilet" << endl;
 			cout << "2-Returneaza bilet" << endl;
 			cout << "3-Valideaza bilet" << endl;
+			cout << "Introduceti alegerea: ";
 			int mm;
 			cin >> mm;
 			mmm = mm;
@@ -207,5 +219,10 @@ int main()
 			mmm = 0;
 
 
-		}
+	}
+	for (i = 0; i < bilete.size(); i++)
+	{
+		g << "----------Bilet " << endl;
+		g << bilete[i] << endl;
+	}
 }

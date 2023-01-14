@@ -138,6 +138,7 @@ public:
 class Student_sau_elev :virtual public Persoana
 {
 public:
+	//void setBilet(Bilet&);
 	void setVarsta(int);
 	 void setPret();//redus cu 40%
 	void afiseazadate();
@@ -146,6 +147,7 @@ public:
 class Persoana_cu_dizabilitati:virtual public Persoana
 {
 public:
+	//void setBilet(Bilet&);
 	void setVarsta(int);
 	void setPret();//redus cu 80%
 	void afiseazadate();
